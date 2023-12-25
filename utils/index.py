@@ -22,12 +22,15 @@ def rename_columns(df, renamed_columns):
 def rename_columns_items(df):
     print('Adicionando string nos identificadores')
 
+    vocab = sorted(set(df.location.tolist()))
+    song2ix = {u: i for i, u in enumerate(vocab, 1)}
+    df['location'] = df.location.apply(lambda song: song2ix[song])
+
     for index, row in df.iterrows():
         user_id = row['user']
-        location_id = row['location']
 
-        df['user'][index] = 'u{}'.format(user_id)
-        df['location'][index] = 'l{}'.format(location_id)
+        df.loc[index, 'user'] = "u{}".format(user_id)
+        df.loc[index, 'location'] = "l{}".format(user_id)
 
     print('Processo de adicao de string finalizado')
 
@@ -72,11 +75,21 @@ def remove_singletons(df, session_time, database):
     size = len(df.index)
     for i in range(size):
 
-        if i == range(size)[-1]:
-            break
-
         actual_user = df['user'][i]
         actual_session_value = df['session'][i]
+
+        if i == range(size)[-1]:
+            previous_user = df['user'][i-1]
+            previous_session_value = df['session'][i-1]
+
+            if actual_user != previous_user:
+                print('Usuario {} no tempo {} foi removido'.format(df['user'][i], df['timestamp'][i]))
+                index_to_remove.append(i)
+
+            if actual_user == previous_user and actual_session_value != previous_session_value:
+                print('Usuario {} no tempo {} foi removido'.format(df['user'][i], df['timestamp'][i]))
+                index_to_remove.append(i)
+            break
 
         next_user = df['user'][i + 1]
         next_session_value = df['session'][i + 1]
