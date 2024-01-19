@@ -28,9 +28,10 @@ def rename_columns_items(df):
 
     for index, row in df.iterrows():
         user_id = row['user']
+        location_id = row['location']
 
         df.loc[index, 'user'] = "u{}".format(user_id)
-        df.loc[index, 'location'] = "l{}".format(user_id)
+        df.loc[index, 'location'] = "l{}".format(location_id)
 
     print('Processo de adicao de string finalizado')
 
