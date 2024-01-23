@@ -31,7 +31,7 @@ def rename_columns_items(df):
 
 
 def sessionize_user(df, session_time, database):
-    df['timestamp'] = df['timestamp'].astype('datetime64')
+    df['timestamp'] = pd.to_datetime(df['timestamp'], format="%Y-%m-%dT%H:%M:%SZ")
     df['dif'] = df['timestamp'].diff()
     df['session'] = df.apply(
         lambda x: 'NEW_SESSION' if x.dif >= timedelta(minutes=session_time) else 'SAME_SESSION', axis=1)
