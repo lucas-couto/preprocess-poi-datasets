@@ -21,18 +21,10 @@ def rename_columns(df, renamed_columns):
 
 def rename_columns_items(df):
     print('Adicionando string nos identificadores')
-
-    vocab = sorted(set(df.location.tolist()))
-    song2ix = {u: i for i, u in enumerate(vocab, 1)}
-    df['location'] = df.location.apply(lambda song: song2ix[song])
-
-    for index, row in df.iterrows():
-        user_id = row['user']
-        location_id = row['location']
-
-        df.loc[index, 'user'] = "u{}".format(user_id)
-        df.loc[index, 'location'] = "l{}".format(location_id)
-
+    
+    df['user'] = df['user'].apply(lambda x: "u{}".format(x))
+    df['location'] = df['location'].apply(lambda x: "l{}".format(x))
+    
     print('Processo de adicao de string finalizado')
 
     return df
