@@ -50,7 +50,7 @@ class PreProcess:
 
     def gowalla(self):
         print("\n ...INICIANDO PRE-PROCESSAMENTO DA BASE GOWALLA...")
-        df = pd.read_csv('dataset/gowalla/listening_history.txt', sep='\t', names=['user', 'timestamp', 'latitude', 'longitude', 'location'], nrows=2_100_000)
+        df = pd.read_csv('dataset/gowalla/listening_history.txt', sep='\t', names=['user', 'timestamp', 'latitude', 'longitude', 'location'])
 
         df = remove_columns(df, ['latitude', 'longitude'])
         df = reorder_columns(df)
