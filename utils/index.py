@@ -1,7 +1,7 @@
 import os
 import json
 import pandas as pd
-from datetime import timedelta
+from datetime import timedelta, datetime
 
 def reorder_columns(df):
     return df[['user', 'location', 'timestamp']]
@@ -127,7 +127,7 @@ def remove_singletons(df, session_time, database):
 def convert_json_to_dataframe(path, remove_attributes, columns):
     dataframe = {'user': [], 'location': [], 'timestamp': []}
 
-    with open(path, 'r') as arquivo:
+    with open(path, 'r', encoding='utf-8', errors='replace') as arquivo:
         lines = arquivo.readlines()
         for line in lines:
             dict_line = json.loads(line)
@@ -140,5 +140,5 @@ def convert_json_to_dataframe(path, remove_attributes, columns):
 
 
 def convert_time_to_datetime64(df):
-    df['timestamp'] = pd.to_datetime(df['timestamp'], format='%Y-%m-%d %H:%M:%S')
+    df['timestamp'] = df['timestamp'].apply(lambda x: datetime.strptime(x, "%Y-%m-%d %H:%M:%S"))
     return df
