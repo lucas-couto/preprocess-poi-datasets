@@ -1,14 +1,6 @@
 import pandas as pd
 
-from utils.index import sort_columns
-from utils.index import remove_columns
-from utils.index import rename_columns
-from utils.index import reorder_columns
-from utils.index import remove_singletons
-from utils.index import rename_columns_items
-from utils.index import convert_json_to_dataframe
-from utils.index import convert_time_to_datetime64
-
+from utils.index import sort_columns, remove_columns, rename_columns, reorder_columns, remove_singletons, rename_columns_items, convert_json_to_dataframe, convert_time_to_datetime64, transform_to_rnn
 
 class PreProcess:
     def __init__(self):
@@ -53,6 +45,10 @@ class PreProcess:
 
         df.to_csv('dataset/foursquare/result.csv', index=False)
 
+        df = transform_to_rnn(df)
+
+        df.to_csv('dataset/foursquare/result_rnn.csv', index=False)
+
     def gowalla(self):
         print("\n...INICIANDO PRE-PROCESSAMENTO DA BASE GOWALLA...")
 
@@ -66,6 +62,10 @@ class PreProcess:
         df = rename_columns_items(df)
 
         df.to_csv('dataset/gowalla/result.csv', index=False)
+
+        df = transform_to_rnn(df)
+
+        df.to_csv('dataset/gowalla/result_rnn.csv', index=False)
 
     def yelp(self):
         print("\n...INICIANDO PRE-PROCESSAMENTO DA BASE YELP...")
@@ -83,3 +83,7 @@ class PreProcess:
         df = remove_singletons(df, 30, 'yelp')
 
         df.to_csv("dataset/yelp/result.csv", index=False)
+
+        df = transform_to_rnn(df)
+
+        df.to_csv('dataset/yelp/result_rnn.csv', index=False)

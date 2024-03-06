@@ -142,3 +142,10 @@ def convert_json_to_dataframe(path, remove_attributes, columns):
 def convert_time_to_datetime64(df):
     df['timestamp'] = df['timestamp'].apply(lambda x: datetime.strptime(x, "%Y-%m-%d %H:%M:%S"))
     return df
+
+def transform_to_rnn(df):
+    vocab = sorted(set(df.location.unique().tolist()))
+    location2ix = {u: i for i, u in enumerate(vocab, 1)}
+    df['location'] = df.location.apply(lambda location: location2ix[location])
+
+    return df
